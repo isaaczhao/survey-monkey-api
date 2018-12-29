@@ -24,9 +24,7 @@
 */    
 
 // start of the program here
-update_log();
-
-// get page name
+// get survey page name
 $aURI = explode ('/', $_SERVER['REQUEST_URI']);
 $__sPage = $aURI [count ($aURI)-2];
 $bForceUpdate = strtolower ($_SERVER['QUERY_STRING']) == 'update' ? 1 : 0;
