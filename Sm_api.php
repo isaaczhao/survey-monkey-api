@@ -30,7 +30,6 @@ $__sPage = $aURI [count ($aURI)-2];
 $bForceUpdate = strtolower ($_SERVER['QUERY_STRING']) == 'update' ? 1 : 0;
 
 ?>
-
 <html><head>
 <title>Survey Monkey for CP <?=$__sPage?></title>
 <link type="text/css" rel="stylesheet" href="https://secure.surveymonkey.com/assets/userweb/smlib.ui-global-bundle-min.55d41bad.css" />
@@ -45,9 +44,7 @@ $bForceUpdate = strtolower ($_SERVER['QUERY_STRING']) == 'update' ? 1 : 0;
 <link type="text/css" rel="stylesheet" href="https://secure.surveymonkey.com/assets/userweb/smlib.ui-global-pro-bundle-min.bce09b9c.css" />
 <link type="text/css" rel="stylesheet" href="https://secure.surveymonkey.com/assets/userweb/smlib.featurecomponents-group-templates-detail-bundle-min.6401cca0.css" />
 </head>
-
 <body>
-          
 <?php
 
 $oSurveyMonkeyAPI = new Sm_api();
@@ -61,7 +58,6 @@ class Sm_api {
   function __construct() { // constructor
     global $__sPage;
     $aConfigs = parse_ini_file ('/var/account/sm.ini', true);
-
     $this->sToken = $aConfigs['token'][$__sPage];
     $this->iUpdateInterval = $aConfigs['update']['interval'];
   }
@@ -439,58 +435,4 @@ class Sm_api {
     return $sCurlGet;
   }
 }    
-    
-/** 
- *
- */
-function json_error() {
-  
-  switch (json_last_error()) {  
-      case JSON_ERROR_NONE:
-            echo ' - No errors';
-        break;
-        case JSON_ERROR_DEPTH:
-            echo ' - Maximum stack depth exceeded';
-        break;
-        case JSON_ERROR_STATE_MISMATCH:
-            echo ' - Underflow or the modes mismatch';
-        break;
-        case JSON_ERROR_CTRL_CHAR:
-            echo ' - Unexpected control character found';
-        break;
-        case JSON_ERROR_SYNTAX:
-            echo ' - Syntax error, malformed JSON';
-        break;
-        case JSON_ERROR_UTF8:
-            echo ' - Malformed UTF-8 characters, possibly incorrectly encoded';
-        break;
-        default:
-            echo ' - Unknown error';
-        break;
-  }
-}    
 
-
-function update_log() {
-  $iUserIP = get_user_ip();
-  if (($iUserIP != '127.0.0.1') && ($iUserIP != '::1')) {
-    date_default_timezone_set('America/los_angeles');
-    $sLog = $iUserIP .'@'. date ('Y-m-d H:i:s') . "\n";
-    file_put_contents ('data/iplog.txt', $sLog, FILE_APPEND);
-  }
-}
-
-function get_user_ip() {
-    $client  = @$_SERVER['HTTP_CLIENT_IP'];
-    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-    $remote  = $_SERVER['REMOTE_ADDR'];
-
-    if(filter_var($client, FILTER_VALIDATE_IP)) {
-        $ip = $client;
-    } elseif(filter_var($forward, FILTER_VALIDATE_IP)) {
-        $ip = $forward;
-    } else {
-        $ip = $remote;
-    }
-    return $ip;
-}
